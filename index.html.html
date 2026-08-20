@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone 17 Pro của Minh</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: #1c1c1e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* 📱 VỎ ĐIỆN THOẠI IPHONE 17 PRO GIỮ NGUYÊN */
+        .iphone-frame {
+            width: 393px;
+            height: 852px;
+            background: #000;
+            border-radius: 55px;
+            padding: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            position: relative;
+            border: 4px solid #444;
+        }
+
+        /* 📺 MÀN HÌNH BÊN TRONG GIỮ NGUYÊN */
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+            border-radius: 43px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 🔝 PHẦN ĐẦU MÀN HÌNH GIỮ NGUYÊN */
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 100;
+        }
+
+        .dynamic-island {
+            position: absolute;
+            top: 11px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 30px;
+            background: black;
+            border-radius: 20px;
+            z-index: 101;
+        }
+
+        .status-right { display: flex; gap: 5px; align-items: center; }
+
+        /* 🔒 MÀN HÌNH KHÓA */
+        .lock-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 60px;
+            z-index: 50;
+            background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .lock-date { font-size: 19px; font-weight: 500; opacity: 0.9; text-align: center; width: 100%; }
+        .lock-time { font-size: 76px; font-weight: 200; margin-top: -5px; }
+        .lock-geo { font-size: 15px; margin-top: 5px; display: flex; align-items: center; gap: 5px; }
+        .swipe-guide { position: absolute; bottom: 40px; font-size: 14px; opacity: 0.7; animation: bounce 2s infinite; cursor: pointer; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* 🔢 MẬT MÃ (070213) */
+        .passcode-screen {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 50px;
+            z-index: 60;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .passcode-title { font-size: 22px; margin-bottom: 20px; }
+        .dots-container { display: flex; gap: 15px; margin-bottom: 40px; }
+        .dot { width: 12px; height: 12px; border: 1.5px solid white; border-radius: 50%; }
+        .dot.active { background: white; }
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px 25px; margin-bottom: 30px; }
+        .key { width: 75px; height: 75px; background: rgba(255, 255, 255, 0.12); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; }
+        .key span:first-child { font-size: 30px; }
+        .keypad-footer { width: 275px; display: flex; justify-content: space-between; font-size: 15px; }
+
+        /* 🏠 MÀN HÌNH CHÍNH & GOOGLE GIỮ NGUYÊN */
+        .home-screen {
+            position: absolute;
+            inset: 0;
+            padding: 60px 16px 24px 16px;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 16px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+            background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+        }
+
+        .google-bar {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px 12px;
+            align-content: start;
+        }
+
+        .app-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+        .app-icon { width: 60px; height: 60px; border-radius: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); background-size: cover; background-position: center; }
+        .app-name { font-size: 11px; text-align: center; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
+        .dock { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 26px; padding: 10px; display: flex; justify-content: space-around; }
+
+        /* 🛠 CỬA SỔ ỨNG DỤNG POPUP */
+        .app-popup {
+            position: absolute;
+            inset: 0;
+            background: #1c1c1e;
+            z-index: 80;
+            padding-top: 44px;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .app-popup.active { transform: translateY(0); }
+        .popup-header { padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2c2c2e; background: #1c1c1e; }
+        .back-btn { color: #0a84ff; cursor: pointer; font-size: 16px; }
+        .popup-content { flex: 1; overflow: hidden; position: relative; background: #000; }
+
+        /* 📷 GIAO DIỆN CAMERA THẬT CHỤP MẶT */
+        .camera-view { width: 100%; height: 75%; background: #000; position: relative; display: flex; justify-content: center; align-items: center; }
+        #webcam { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        .camera-controls { height: 25%; background: #000; display: flex; justify-content: space-around; align-items: center; width: 100%; padding-bottom: 20px; }
+        .shutter-btn { width: 70px; height: 70px; border-radius: 50%; background: white; border: 5px solid #333; cursor: pointer; }
+        .shutter-btn:active { background: #ddd; }
+        .flash-effect { position: absolute; inset: 0; background: white; opacity: 0; pointer-events: none; z-index: 90; }
+        @keyframes flashAnim { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+        /* 🖼 Thư viện ảnh */
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; }
+        .gallery-thumb-container { position: relative; width: 100%; aspect-ratio: 1; }
+        .gallery-thumb { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; cursor: pointer; background: #333; }
+        .delete-photo-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        /* ⏰ ĐỒNG HỒ & 🌧 THỜI TIẾT HOẠT ĐỘNG THỰC TẾ */
+        .clock-center, .weather-center { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 24px; text-align: center; background: #1c1c1e; }
+        .clock-large-time { font-size: 55px; font-weight: 200; margin-bottom: 5px; font-variant-numeric: tabular-nums; }
+        .clock-large-date { font-size: 16px; opacity: 0.7; }
+        
+        .weather-location { font-size: 20px; font-weight: 600; margin-bottom: 5px; }
+        .weather-temp { font-size: 55px; font-weight: 200; margin: 10px 0; }
+        .weather-desc { font-size: 16px; opacity: 0.8; }
+        .weather-detail { font-size: 13px; opacity: 0.6; margin-top: 15px; line-height: 1.5; }
+
+        /* 🧮 MÁY TÍNH ĐỂ TÍNH TOÁN HOẠT ĐỘNG HOÀN HẢO */
+        .calc-wrapper { display: flex; flex-direction: column; height: 100%; padding: 20px; justify-content: flex-end; background: #000; }
+        .calc-display { font-size: 50px; text-align: right; margin-bottom: 20px; color: white; padding-right: 10px; font-weight: 300; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .calc-btn { height: 65px; border-radius: 50%; border: none; font-size: 24px; color: white; background: #333; cursor: pointer; }
+        .calc-btn.orange { background: #ff9500; }
+        .calc-btn.gray { background: #a5a5a5; color: black; }
+        .calc-btn:active { filter: brightness(1.3); }
+
+        .map-frame, .google-frame { width: 100%; height: 100%; border: none; background: white; }
+        .show { opacity: 1 !important; pointer-events: auto !important; }
+        .hide { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="iphone-frame">
+        <div class="screen">
+            
+            <div class="status-bar">
+                <div class="time" id="status-time">00:00</div>
+                <div class="dynamic-island"></div>
+                <div class="status-right">📶 🛜 🔋</div>
+            </div>
+
+            <div class="lock-screen" id="lock-screen">
+                <div class="lock-date" id="lock-date">Đang cập nhật...</div>
+                <div class="lock-time" id="lock-time">00:00</div>
+                <div class="lock-geo">Mậu Lâm 26° 🌧 Mưa lớn</div>
+                <div class="swipe-guide" onclick="showPasscode()">🔒 Nhấp để mở khóa</div>
+            </div>
+
+            <div class="passcode-screen" id="passcode-screen">
+                <div class="passcode-title">Nhập mật mã</div>
+                <div class="dots-container">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                </div>
+                <div class="keypad">
+                    <div class="key" onclick="pressKey('1')"><span>1</span></div>
+                    <div class="key" onclick="pressKey('2')"><span>2</span></div>
+                    <div class="key" onclick="pressKey('3')"><span>3</span></div>
+                    <div class="key" onclick="pressKey('4')"><span>4</span></div>
+                    <div class="key" onclick="pressKey('5')"><span>5</span></div>
+                    <div class="key" onclick="pressKey('6')"><span>6</span></div>
+                    <div class="key" onclick="pressKey('7')"><span>7</span></div>
+                    <div class="key" onclick="pressKey('8')"><span>8</span></div>
+                    <div class="key" onclick="pressKey('9')"><span>9</span></div>
+                    <div></div>
+                    <div class="key" onclick="pressKey('0')"><span>0</span></div>
+                </div>
+                <div class="keypad-footer">
+                    <span>Khẩn cấp</span>
+                    <span style="cursor:pointer" onclick="clearPasscode()">Xóa</span>
+                    <span style="cursor:pointer" onclick="hidePasscode()">Hủy</span>
+                </div>
+            </div>
+
+            <div class="home-screen" id="home-screen">
+                <div class="google-bar" onclick="openApp('Google')">
+                    <span>G 🔍</span><span>Tìm kiếm tại Mậu Lâm...</span>
+                </div>
+
+                <div class="app-grid">
+                    <div class="app-item" onclick="openApp('Bản đồ')">
+                        <div class="app-icon" style="background-image: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?w=100');"></div>
+                        <div class="app-name">Bản đồ</div>
+                    </div>
+                    <div class="app-item" onclick="openApp('Camera')">
+                        <div class="app-icon" style="background-image: url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=100');"></div>
+                        <div class="app-name">Camera</div>
+                    </div>
+                    <div class="app-item" onclick="openApp('Ảnh')">
+                        <div class="app-icon" style="background-image: url('https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=100');"></div>
+                        <div class="app-name">Ảnh</div>
+                    </div>
+                    <div class="app-item" onclick="openApp('Thời tiết')">
+                        <div class="app-icon" style="background-image: url('https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=100');"></div>
+                        <div class="app-name">Thời tiết</div>
+                    </div>
+                    <div class="app-item" onclick="openApp('Đồng hồ')">
+                        <div class="app-icon" style="background-image: url('https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=100');"></div>
+                        <div class="app-name">Đồng hồ</div>
+                    </div>
+                    <div class="app-item" onclick="openApp('Máy tính')">
+                        <div class="app-icon" style="background-image: url('https://images.unsplash.com/photo-1587145820266-a5951ee6f620?w=100');"></div>
+                        <div class="app-name">Máy tính</div>
+                    </div>
+                </div>
+
+                <div class="dock">
+                    <div class="app-icon" style="background-image: url('https://images.unsplash.com/photo-1546054454-aa26e2b734c7?w=100');" onclick="alert('Điện thoại hoạt động')"></div>
+                    <div class="app-icon" style="background-image: url('https://images.unsplash.com/photo-1496181130204-7552cc1454e4?w=100');" onclick="openApp('Google')"></div>
+                </div>
+            </div>
+
+            <div class="app-popup" id="app-popup">
+                <div class="popup-header">
+                    <span class="back-btn" onclick="closeApp()">◀ Trở về</span>
+                    <span id="popup-title" style="font-weight:600">Ứng dụng</span>
+                    <span style="opacity: 0;">◀</span>
+                </div>
+                <div class="popup-content" id="popup-content"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const CORRECT_PIN = "070213";
+        let currentInput = "";
+        let streamRef = null;  
+
+        // Khởi tạo bộ nhớ cục bộ cho Ảnh lưu vĩnh viễn
+        let savedPhotos = JSON.parse(localStorage.getItem('minh_iphone_photos')) || [];
+
+        // Quản lý biến trạng thái Máy tính
+        let calcMemory = "0";
+        let shouldResetCalcDisplay = false;
+
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}`;
+            
+            document.getElementById('status-time').innerText = timeString;
+            if(document.getElementById('lock-time')) document.getElementById('lock-time').innerText = timeString;
+            
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            const dateString = now.toLocaleDateString('vi-VN', options);
+            if(document.getElementById('lock-date')) document.getElementById('lock-date').innerText = dateString;
+
+            const clockTimeEl = document.getElementById('app-clock-time');
+            const clockDateEl = document.getElementById('app-clock-date');
+            if(clockTimeEl && clockDateEl) {
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+                clockTimeEl.innerText = `${timeString}:${seconds}`;
+                clockDateEl.innerText = dateString;
+            }
+        }
+        setInterval(updateClock, 1000); 
+        updateClock();
+
+        function showPasscode() { document.getElementById('passcode-screen').classList.add('show'); }
+        function hidePasscode() { document.getElementById('passcode-screen').classList.remove('show'); clearPasscode(); }
+
+        function pressKey(num) {
+            if (currentInput.length >= 6) return;
+            currentInput += num; updateDots();
+            if (currentInput.length === 6) {
+                if (currentInput === CORRECT_PIN) {
+                    document.getElementById('lock-screen').classList.add('hide');
+                    document.getElementById('passcode-screen').classList.remove('show');
+                    document.getElementById('home-screen').classList.add('show');
+                } else { alert("Mật mã sai!"); clearPasscode(); }
+            }
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => dot.classList.toggle('active', index < currentInput.length));
+        }
+        function clearPasscode() { currentInput = ""; updateDots(); }
+
+        async function openApp(appName) {
+            const title = document.getElementById('popup-title');
+            const content = document.getElementById('popup-content');
+            title.innerText = appName; content.innerHTML = "";
+
+            if (appName === 'Camera') {
+                content.innerHTML = `
+                    <div class="camera-view">
+                        <div class="flash-effect" id="flash-effect"></div>
+                        <video id="webcam" autoplay playsinline></video>
+                    </div>
+                    <div class="camera-controls">
+                        <div class="shutter-btn" onclick="takeActualPhoto()"></div>
+                    </div>`;
+                try {
+                    streamRef = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                    document.getElementById('webcam').srcObject = streamRef;
+                } catch (err) {
+                    content.innerHTML = `<p style="padding:20px; text-align:center;">Vui lòng cấp quyền sử dụng máy ảnh để chụp mặt.</p>`;
+                }
+            } 
+            else if (appName === 'Ảnh') {
+                renderGallery(content);
+            }
+            else if (appName === 'Đồng hồ') {
+                const now = new Date();
+                const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+                content.innerHTML = `
+                    <div class="clock-center">
+                        <div style="font-size: 14px; text-transform: uppercase; letter-spacing: 2px; color: #0a84ff; margin-bottom: 10px;">Giờ Hệ Thống</div>
+                        <div class="clock-large-time" id="app-clock-time">${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}</div>
+                        <div class="clock-large-date" id="app-clock-date">${now.toLocaleDateString('vi-VN', options)}</div>
+                    </div>`;
+            }
+            else if (appName === 'Thời tiết') {
+                content.innerHTML = `
+                    <div class="weather-center">
+                        <div class="weather-location">Xã Mậu Lâm</div>
+                        <div style="font-size:14px; opacity:0.6;">Như Thanh, Thanh Hóa</div>
+                        <div class="weather-temp">26°C</div>
+                        <div class="weather-desc">🌧 Mưa lớn diện rộng</div>
+                        <div class="weather-detail">
+                            C: 28° Th: 24°<br>
+                            Độ ẩm: 92% | Sức gió: 14 km/h<br>
+                            <span style="color:#5ac8fa;">Dự báo: Có mưa vừa đến mưa to diện rộng kéo dài cả ngày.</span>
+                        </div>
+                    </div>`;
+            }
+            else if (appName === 'Máy tính') {
+                calcMemory = "0";
+                shouldResetCalcDisplay = false;
+                content.innerHTML = `
+                    <div class="calc-wrapper">
+                        <div class="calc-display" id="calc-val">0</div>
+                        <div class="calc-buttons">
+                            <button class="calc-btn gray" onclick="pressCalcAction('C')">C</button>
+                            <button class="calc-btn gray" onclick="pressCalcAction('+/-')">+/-</button>
+                            <button class="calc-btn gray" onclick="pressCalcAction('%')">%</button>
+                            <button class="calc-btn orange" onclick="pressCalcAction('÷')">÷</button>
+                            
+                            <button class="calc-btn" onclick="pressCalcNum('7')">7</button>
+                            <button class="calc-btn" onclick="pressCalcNum('8')">8</button>
+                            <button class="calc-btn" onclick="pressCalcNum('9')">9</button>
+                            <button class="calc-btn orange" onclick="pressCalcAction('×')">×</button>
+                            
+                            <button class="calc-btn" onclick="pressCalcNum('4')">4</button>
+                            <button class="calc-btn" onclick="pressCalcNum('5')">5</button>
+                            <button class="calc-btn" onclick="pressCalcNum('6')">6</button>
+                            <button class="calc-btn orange" onclick="pressCalcAction('-')">-</button>
+                            
+                            <button class="calc-btn" onclick="pressCalcNum('1')">1</button>
+                            <button class="calc-btn" onclick="pressCalcNum('2')">2</button>
+                            <button class="calc-btn" onclick="pressCalcNum('3')">3</button>
+                            <button class="calc-btn orange" onclick="pressCalcAction('+')">+</button>
+                            
+                            <button class="calc-btn" style="grid-column: span 2; border-radius:30px; text-align:left; padding-left:25px;" onclick="pressCalcNum('0')">0</button>
+                            <button class="calc-btn" onclick="pressCalcNum('.')">.</button>
+                            <button class="calc-btn orange" onclick="pressCalcAction('=')">=</button>
+                        </div>
+                    </div>`;
+            }
+            else if (appName === 'Bản đồ') {
+                content.innerHTML = `<iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59914.54716766467!2d105.5143306!3d20.1887373!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3136696efb624f11%3A0x6b10b0ff1987d6bb!2zTeG6rXUgTMSDynamicw_hu4duIE5oxrAgVGhhbmgsIFRoYW5oIEjDs2EsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1710000000000!5m2!1svi!2s" allowfullscreen="" loading="lazy"></iframe>`;
+            }
+            else if (appName === 'Google') {
+                content.innerHTML = `<iframe class="google-frame" src="https://www.google.com/search?igu=1"></iframe>`;
+            }
+            document.getElementById('app-popup').classList.add('active');
+        }
+
+        function renderGallery(container) {
+            if (!savedPhotos.length) {
+                container.innerHTML = `<p style="padding:40px; text-align:center; color:#8e8e93;">Thư viện trống.<br>Hãy vào Camera chụp mặt bạn nhé!</p>`;
+                return;
+            }
+            let html = `<div class="gallery-grid">`;
+            savedPhotos.forEach((url, index) => {
+                html += `
+                    <div class="gallery-thumb-container">
+                        <img class="gallery-thumb" src="${url}" onclick="window.open('${url}')">
+                        <button class="delete-photo-btn" onclick="deletePhoto(${index}, event)">✕</button>
+                    </div>`;
+            });
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        function deletePhoto(index, event) {
+            event.stopPropagation();
+            if(confirm("Bạn có muốn xóa bức ảnh này không?")) {
+                savedPhotos.splice(index, 1);
+                localStorage.setItem('minh_iphone_photos', JSON.stringify(savedPhotos));
+                renderGallery(document.getElementById('popup-content'));
+            }
+        }
+
+        function closeApp() {
+            if (streamRef) {
+                streamRef.getTracks().forEach(track => track.stop());
+                streamRef = null;
+            }
+            document.getElementById('app-popup').classList.remove('active');
+        }
+
+        function takeActualPhoto() {
+            const video = document.getElementById('webcam');
+            const flash = document.getElementById('flash-effect');
+            if(!video) return;
+
+            flash.style.animation = 'none'; void flash.offsetWidth;
+            flash.style.animation = 'flashAnim 0.3s ease-out';
+
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const dataUrl = canvas.toDataURL('image/png');
+            savedPhotos.unshift(dataUrl); 
+            localStorage.setItem('minh_iphone_photos', JSON.stringify(savedPhotos));
+            alert("Đã chụp khuôn mặt của bạn và lưu vĩnh viễn vào bộ nhớ ứng dụng Ảnh!");
+        }
+
+        /* 🧮 LOGIC HOẠT ĐỘNG CỦA MÁY TÍNH */
+        function pressCalcNum(num) {
+            const disp = document.getElementById('calc-val');
+            if (disp.innerText === "0" || shouldResetCalcDisplay) {
+                if (num === ".") { disp.innerText = "0."; }
+                else { disp.innerText = num; }
+                shouldResetCalcDisplay = false;
+            } else {
+                if (num === "." && disp.innerText.includes(".")) return;
+                disp.innerText += num;
+            }
+        }
+
+        function pressCalcAction(action) {
+            const disp = document.getElementById('calc-val');
+            if (action === 'C') {
+                disp.innerText = "0";
+                calcMemory = "0";
+                shouldResetCalcDisplay = false;
+            } else if (action === '+/-') {
+                disp.innerText = (parseFloat(disp.innerText) * -1).toString();
+            } else if (action === '%') {
+                disp.innerText = (parseFloat(disp.innerText) / 100).toString();
+            } else if (['+', '-', '×', '÷'].includes(action)) {
+                calcMemory += " " + disp.innerText + " " + action;
+                shouldResetCalcDisplay = true;
+            } else if (action === '=') {
+                calcMemory += " " + disp.innerText;
+                try {
+                    let formattedExpr = calcMemory.replace(/×/g, '*').replace(/÷/g, '/');
+                    // Tính toán chuỗi biểu thức an toàn bằng Function thay vì eval trực tiếp
+                    let result = new Function(`return (${formattedExpr})`)();
+                    disp.innerText = Number(result.toFixed(8)).toString(); // Giới hạn 8 chữ số thập phân
+                } catch (e) {
+                    disp.innerText = "Lỗi";
+                }
+                calcMemory = "0";
+                shouldResetCalcDisplay = true;
+            }
+        }
+    </script>
+</body>
+</html>
